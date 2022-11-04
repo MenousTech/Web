@@ -157,8 +157,8 @@ def signup():
                             sender='snehashish.laskar@gmail.com',
                             recipients=[email]
                         ) 
-                        msg.body = render_template('email.html', username = username, link = f'https://manager.menoustech.com/confirm/{token}')
-                        msg.html = render_template('email.html', username = username, link = f'http://manager.menoustech.com/confirm/{token}')
+                        msg.body = render_template('email.html', username = username, link = f'http://www.manager.menoustech.com/confirm/{token}')
+                        msg.html = render_template('email.html', username = username, link = f'http://www.manager.menoustech.com/confirm/{token}')
                         mail.send(msg)
                         return render_template('confirm.html')
                     except Exception as ex:
