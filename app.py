@@ -11,6 +11,7 @@ from secrets import token_urlsafe
 import json 
 from pathlib import Path
 import os
+import random as r
 
 # Initializing flask app called app
 app = Flask(__name__)
@@ -32,14 +33,13 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 # Setting the api url
-apiurl = 'http://snehashishlaskar090.pythonanywhere.com'
+apiurl = 'http://127.0.0.1:8000/'
 usrName = None
 psword = None
 
 
 def convertUserDataToJson(username):
     data = requests.get('{}sites?username={}'.format(apiurl, username)).json()
-
     return data
 
 
@@ -136,7 +136,8 @@ def signup():
                         data['password'] = password
                         json.dump(data, file)
 
-                    token = str(token_urlsafe(16))
+                    token = str(r.randint(100000, 1000000))
+
                     if os.path.exists(path+'tokens.json'):
                         with open(path+'tokens.json', 'w') as file:
                             json.dump([], file)
@@ -149,18 +150,17 @@ def signup():
                     with open(path+'tokens.json', 'w') as file:
                         json.dump(data, file)
                     
-                    
-
                     try:
                         msg = Message(
                             'Confirmation Email',
-                            sender='snehashish.laskar@gmail.com',
+                            sender = "admin@menoustech.com",
                             recipients=[email]
                         ) 
-                        msg.body = render_template('email.html', username = username, link = f'http://www.manager.menoustech.com/confirm/{token}')
-                        msg.html = render_template('email.html', username = username, link = f'http://www.manager.menoustech.com/confirm/{token}')
+                        msg.body = render_template('email.html', username = username, OTP = token)
+                        msg.html = render_template('email.html', username = username, OTP = token)
+
                         mail.send(msg)
-                        return render_template('confirm.html')
+                        return redirect('/confirm')
                     except Exception as ex:
                         return str(ex)
 
@@ -244,32 +244,38 @@ def deleteUser():
 
 
 
-@app.route('/confirm/<token>', methods=['GET'])
-def confirm(token):
+@app.route('/confirm/', methods=['GET', 'POST'])
+def confirm():
 
     with open(path+'tokens.json') as file:
         data = json.load(file)
+
     with open(path+'creds.json') as file:
         data2 = json.load(file)
-    if token in data:
-        query = requests.post('{}createuser?username={}&password={}'.format(
-                apiurl,data2['username'], data2['password']
-            ))
-        session['username'] = data2['username']
-        data2['username'] = ''
-        data2['password'] = ''
-        with open(path+'creds.json', 'w') as file:
-            json.dump(data2, file)
 
-        return redirect('/home')
+    if request.method == 'GET':
+        return render_template('confirm.html')
     else:
-        return redirect('/signup')
-
+        otp = str(request.form['otp'])
+        if otp in data:
+            print(otp)
+            requests.post('{}createuser?username={}&password={}'.format(
+                    apiurl,data2['username'], data2['password']
+                ))
+            session['username'] = data2['username']
+            data2['username'] = ''
+            data2['password'] = ''
+            with open(path+'creds.json', 'w') as file:
+                json.dump(data2, file)
+            return redirect('/home')
+        else:
+            return render_template('confirm.html', incorrect=True)
 
 
 @app.route('/<page>', methods=['GET'])
 def unknown(page):
     return render_template('error.html')
 
-app.run(debug=True, host = '0.0.0.0', port =80)
 
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0")

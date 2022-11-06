@@ -44,8 +44,20 @@
 
 {% block content %}
 <div class = "content">
+    {% if incorrect %}
+    <div class="alert alert-danger" role="alert">
+        Sorry Wrong OTP
+      </div>
+    {% endif %}
     <h1 class = 'title' >Conformation Email Sent!</h1>
-    <p>Pleae check the email account you used to sign up and click the link to confirm your account</p>
+    <p>Pleae check the email account you used to sign up and and enter the OTP below</p>
+    <form action = "#" method="post">
+        <div class="form-group">
+          <label for="exampleInputPassword1">OTP</label>
+          <input type="text" name = "otp" class="form-control" id="exampleInputPassword1" placeholder="OTP">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
 </div>
 
 {% endblock %}
