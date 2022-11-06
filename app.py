@@ -33,7 +33,7 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 # Setting the api url
-apiurl = 'http://127.0.0.1:8000/'
+apiurl = 'http://snehashishlaskar090.pythonanywhere.com'
 usrName = None
 psword = None
 
