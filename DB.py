@@ -32,34 +32,34 @@ def init_auth_table():
     authconn.commit()
 
 def listAllAuthData():
-    query = """SELECT * FROM AUTHDATA"""
+    query = "SELECT * FROM AUTHDATA"
 
     authcursor.execute(query)
     ans = authcursor.fetchall()
     return ans
 
 def addUser(username, password):
-    query = f"""INSERT INTO AUTHDATA(username, password) VALUES(?, ?)"""
+    query = f"INSERT INTO AUTHDATA(username, password) VALUES(?, ?)"
     authcursor.execute(query, (username, password))
     authconn.commit()
 
-    query = """CREATE TABLE IF NOT EXISTS {}(sitename VARCHAR, email VARCHAR, password VARCHAR, username VARCHAR);""".format(username)
+    query = "CREATE TABLE IF NOT EXISTS {}(sitename VARCHAR, email VARCHAR, password VARCHAR, username VARCHAR);".format(username)
     datacursor.execute(query)
     dataconn.commit()
 
     return listAllAuthData()
 
 def selectiveUsername(username):
-    query = """SELECT password FROM AUTHDATA WHERE username =:username """
+    query = "SELECT password FROM AUTHDATA WHERE username =:username "
     authcursor.execute(query, {'username':username})
     return authcursor.fetchall()
 
 def fetchAllUserdata(username):
-    datacursor.execute('''SELECT * FROM {}'''.format(username))
+    datacursor.execute('SELECT * FROM {}'.format(username))
     return datacursor.fetchall()
 
 def fetchUserDataSite(username, sitename):
-    datacursor.execute('''SELECT * FROM {} WHERE sitename = {}'''.format(username, sitename))
+    datacursor.execute('SELECT * FROM {} WHERE sitename = {}'.format(username, sitename))
     return datacursor.fetchall()
 
 def addSite(username, sitename, email, password, site_username):
@@ -110,4 +110,3 @@ def deleteUser(username):
     
 startup()
 init_auth_table()
-print(selectiveUsername('snehashish'))
