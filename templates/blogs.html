@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title%}{% endblock %}</title>
+    <title>Blogs</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
-    <link rel="stylesheet" href="../static/style.css">
+
+    <link rel="stylesheet" href="../static/base.css">
     <link rel="icon" href="{{url_for('static', filename='logo.png')}}">
     <link rel="icon" type="image/x-icon" href="../static/logo.png">
-    
-    {% block header %}{% endblock %}
+
 </head>
 <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-right">
@@ -21,7 +21,7 @@
                   <!-- <img src="../static/logo.png"class="d-inline-block align-top" alt=""> -->
                 </a>
                 <a class="navbar-brand" href="/">
-                  Menous Technologies Apps
+                  Menous Technologis Apps
                 </a>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav ml-auto">
@@ -68,12 +68,20 @@
                   </form> -->
                 </div>
               </nav>
-  <div style="margin: 25px 10px 10px 10px; text-align: center">
-    {% block content %}{% endblock %}
-  </div>
 
 
-{% block scripts %}{% endblock %}
+              <div>
+                {% for i in data %}
+                <div class = "container">
+                <h1 class = "title">{{ i['title'] }}<small>Posted on {{ i['date'] }} by {{ i['author'] }}</small></h1>
+                    {% for para in i['body'] %}
+                        <p>{{ para }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        
+            </div>
+
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -89,3 +97,14 @@
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,14 @@
+.container {
+    width: 80%;
+    padding: 40px;
+    font-size: 20px;
+}
+.title small{
+    color: darkgray;
+    font-size: 15px;
+    padding-left: 20px;
+}
+.title {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #191919;
+}

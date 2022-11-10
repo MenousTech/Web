@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}New Post{% endblock %}
+
+{% block header %}
+<style>
+    .container {
+        width: 60%;
+        text-align: left;
+    }
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+
+    <div class = 'container'>
+        <form action="#" method="post">
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Title</label>
+                <input type="text" name = 'title' class="form-control" id="exampleFormControlInput1"">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Date</label>
+                <input type="text" name = 'date' class="form-control" id="exampleFormControlInput1">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Text</label>
+                <textarea class="form-control" name = 'txt' id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+    </div>
+
+
+{% endblock %}

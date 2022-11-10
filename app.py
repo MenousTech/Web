@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 import os
 import random as r
+import db
 
 # Initializing flask app called app
 app = Flask(__name__)
@@ -33,7 +34,7 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 # Setting the api url
-apiurl = 'http://snehashishlaskar090.pythonanywhere.com'
+apiurl = 'http://snehashishlaskar090.pythonanywhere.com/'
 usrName = None
 psword = None
 
@@ -68,12 +69,12 @@ def login():
                 print(usrname, psword)
                 if i[0] == usrname and i[1] == psword:
                     session['username'] = usrname
-                    return redirect('/home')
+                    return redirect('/passwords/home')
         
             return render_template('login.html', error=True)
 
         else:
-            return redirect('/home')
+            return redirect('/passwords/home')
 
     else:
         user = None
@@ -90,7 +91,7 @@ def login():
             return render_template('login.html')
 
         else:
-            return redirect('/home')
+            return redirect('/passwords/home')
 
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -149,7 +150,7 @@ def signup():
 
                     with open(path+'tokens.json', 'w') as file:
                         json.dump(data, file)
-                    
+                    db.addUser(username)
                     try:
                         msg = Message(
                             'Confirmation Email',
@@ -165,7 +166,7 @@ def signup():
                         return str(ex)
 
         else:
-            return redirect('/home')
+            return redirect('/passwords/home')
 
     else:
         user = None
@@ -177,13 +178,13 @@ def signup():
             pass
 
         if user != None and pw != None:
-            return redirect('/home')
+            return redirect('/passwords/home')
         else:
             return render_template('signup.html', msg = "")       
 
 
 # Snehashish Laskar
-@app.route('/home', methods=['GET', 'POST'])
+@app.route('/passwords/home', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
         if 'add' in request.form:
@@ -200,7 +201,7 @@ def home():
                 email,
                 username,
             ))
-            return redirect('/home')
+            return redirect('/passwords/home')
         
         elif 'del' in request.form:
             name = request.form['name']
@@ -211,7 +212,7 @@ def home():
                 name
             ))
 
-            return redirect('/home')
+            return redirect('/passwords/home')
     else:
         return render_template('home.html', sess = True, data = convertUserDataToJson(session['username']))
 
@@ -267,10 +268,43 @@ def confirm():
             data2['password'] = ''
             with open(path+'creds.json', 'w') as file:
                 json.dump(data2, file)
-            return redirect('/home')
+            return redirect('/passwords/home')
         else:
             return render_template('confirm.html', incorrect=True)
 
+@app.route('/blogs/', methods = ['GET', 'POST'])
+def blog():
+    if session['username'] == '':
+        return redirect('/auth/')
+    data = db.readUserDb(session['username'])
+    data.reverse()
+    return render_template('blogs.html', data=data, sess = True)
+
+@app.route('/blogs/<username>', methods = ['GET', 'POST'])
+def userBlog(username):
+
+    data = db.readUserDb(username)
+    data.reverse()
+    if session['username'] == None:
+        return render_template('blogs.html', data=data, sess = False)
+    return render_template('blogs.html', data=data, sess = True)
+
+@app.route('/blogs/newpost', methods = ['POST', 'GET'])
+def newPost():
+
+    if request.method == 'GET':
+        return render_template('add-post.html')
+    else:
+        if session ['username'] == None:
+            return redirect('/auth')
+
+        title = request.form['title']
+        date = request.form['date']
+        txt = request.form['txt']
+        body = txt.split('\r\n')
+
+        db.addPost(session['username'], title, date, body)
+        return redirect('/blogs/')
 
 @app.route('/<page>', methods=['GET'])
 def unknown(page):
@@ -278,4 +312,4 @@ def unknown(page):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+    app.run(debug=True, host="0.0.0.0", port=8000)

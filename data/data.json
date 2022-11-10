@@ -1,0 +1,36 @@
+{
+ "snehashish": [
+  {
+   "title": "Hello World 2",
+   "date": "20th November 2022",
+   "body": [
+    "Hello world"
+   ],
+   "author": "snehashish"
+  },
+  {
+   "title": "Hello World!",
+   "date": "10th November 2022",
+   "body": [
+    "We are a small organization that works on different open source projects and products. We also provide enterprise solution to small companies looking for system software and website development. We create web applications, command line tools and scripts.",
+    "",
+    "We are a startup software company that works on innovative pieces of software. We develop command line tools and web apps. We also provide enterprise solutions to companies looking for software upgrades and website design and development. We started of as a Github organization working on open source projects. We started this company to create open source software that can be used as alternatives to less trustworthy and close sourced applications. We also wanted to provide small companies with a IT structure as everything in the world is now moving to the web.",
+    "",
+    "Snehashish Laskar is a high school student currently studying at Sahyadri School Pune KFI. He is a person who loves to program and create music. He has released albums to Spotify and SoundCloud. He founded the company with his friend.",
+    "",
+    "Ishan Kashyap is a high school student currently studying at Sahyadri School Pune KFI. He is a talented programmer who co-founded this company along with his best friend Snehashish and is leading the IT department as the current CTO"
+   ],
+   "author": "snehashish"
+  }
+ ],
+ "new": [
+  {
+   "title": "My First Post!",
+   "date": "10th November 2022",
+   "body": [
+    "We are a small organization that works on different open source projects and products. We also provide enterprise solution to small companies looking for system software and website development. We create web applications, command line tools and scripts."
+   ],
+   "author": "new "
+  }
+ ]
+}
