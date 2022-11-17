@@ -3,11 +3,15 @@ import requests
 import db
 
 def blog():
-    if session['username'] == '':
-        return redirect('/auth/')
-    data = db.readUserDb(session['username'])
-    data.reverse()
-    return render_template('blogs.html', data=data, sess = True)
+    if 'username' in session:
+        if session['username'] == '':
+            return redirect('/auth/')
+        else:
+            data = db.readUserDb(session['username'])
+            data.reverse()
+            return render_template('blogs.html', data=data, sess = True)
+    else:
+        return redirect('/auth')
 
 
 def blogUser(username):

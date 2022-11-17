@@ -4,11 +4,7 @@
 {% block header %}
 <style>
     body {
-        background: whitesmoke;
-    }
-    .title {
-        font-weight: 100;
-        font-size: 80px;
+        background:whitesmoke;
     }
     #check {
         border: none;
@@ -18,22 +14,77 @@
         border-radius: 20px;
         color: white;
     }
-    .content {
-        position: absolute;
-        top:50%;
-        left: 50%;
-        transform: translate(-50% , -50%);
-        width:auto;
-        color: black;
-        padding: 50px;
+    .card {
+        text-align: left;
+        border-radius: 20px;
+        background-color: white;
+        box-shadow: rgba(0, 0, 0, 0.15) 1px 30px 50px;
+    }
+
+    .card:hover {
+        box-shadow: rgba(0, 0, 0, 0.55) 1px 30px 50px;
+        cursor: pointer;
+    }
+    .account {
+        text-align: center;
+        padding: 30px;
+        margin: 20px;
+    }
+    .account h1{
+        font-weight: 200;
+    }
+    .account h3{
+        font-weight: 200;
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class = "content">
-    <h1 class = 'title' >Manage Your Passwords</h1>
-    <a class="btn btn-primary" id = "check" href="/auth" role="button">Check It Out!</a>
+
+<div class = 'account' >
+    <h1>One Account, Multiple services!</h1>
+<h3>Create Your Menous Account Now!</h3>
 </div>
+
+<div class="card-deck" style = "width: 80%; margin-left: 10%;">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Menous Password</h5>
+        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+        <ul class="list-group">
+            <li class="list-group-item">Cras justo odio</li>
+            <li class="list-group-item">Dapibus ac facilisis in</li>
+            <li class="list-group-item">Morbi leo risus</li>
+            <li class="list-group-item">Porta ac consectetur ac</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+          </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Menous Blogs</h5>
+        <p class="card-text">Menous Blogs is a service that allows you to start your own Text Blog. It works on any browser be it mobile or desktop. This enables to share your stories by posting everyday.</p>
+        <ul class="list-group">
+            <li class="list-group-item">Cras justo odio</li>
+            <li class="list-group-item">Dapibus ac facilisis in</li>
+            <li class="list-group-item">Morbi leo risus</li>
+            <li class="list-group-item">Porta ac consectetur ac</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+          </ul>
+    </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Menous Tasks</h5>
+        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+        <ul class="list-group">
+            <li class="list-group-item">Cras justo odio</li>
+            <li class="list-group-item">Dapibus ac facilisis in</li>
+            <li class="list-group-item">Morbi leo risus</li>
+            <li class="list-group-item">Porta ac consectetur ac</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+          </ul>
+    </div>
+  </div>
 
 {% endblock %}

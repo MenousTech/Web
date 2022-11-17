@@ -4,7 +4,10 @@
     margin: 0;
     float: none;
 }
-
+nav{
+  background-color: #191919;
+  border-bottom: 3px solid rgba(51,221,255,0.9);
+}
 /* 
 body nav form a{
   font-size: 20px;
@@ -32,7 +35,16 @@ body nav form a{
   border-radius : 10px;
   border: 1px rgba(51,221,255,0.9) solid;
 }
-
+.navbar-brand {
+  color: white;
+}
+.navbar-brand img {
+  width: 40px;
+  height: 40px;
+}
+.navbar-brand:hover{
+  color: white;
+}
 body nav img{
   height: 4rem;
   width:4rem;
@@ -49,6 +61,7 @@ body nav img{
   text-decoration: none;
   font-size: 20px;
   padding: 7px;
+  background-color: none;
 
 }
 
@@ -145,4 +158,28 @@ tr th:nth-last-of-type(2) {
 
 #pagelink {
   margin-left: 10px;
+  border: 1px solid white;
+  background-color: #191919;
+}
+
+#pagelink:hover {
+  background-color: white;
+  color:black;
+}
+
+.nav-link {
+  color:lightgray;
+  font-weight: 200;
+}
+
+.nav-link:hover {
+  color:white;
+}
+
+.nav-link:focus {
+  color:white;
+  border: none;
+}
+.nav {
+  padding-bottom: 1px;
 }

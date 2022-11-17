@@ -73,11 +73,15 @@ def cook():
 def deleteUser():
     return auth.deleteUser()
 
+@app.route('/passwords/home', methods=["GET", "POST"])
+def passwordHome():
+    return redirect('/passwords/')
+    
 @app.route('/confirm/', methods=['GET', 'POST'])
 def confirm():
     return auth.confirm()
 
-@app.route('/passwords/home', methods=['GET', 'POST'])
+@app.route('/passwords/', methods=['GET', 'POST'])
 def pw():
     return passwords.home()
 
