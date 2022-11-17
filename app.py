@@ -13,6 +13,9 @@ from pathlib import Path
 import os
 import random as r
 import db
+import passwords
+import auth
+import blogs
 
 # Initializing flask app called app
 app = Flask(__name__)
@@ -38,67 +41,21 @@ apiurl = 'http://snehashishlaskar090.pythonanywhere.com/'
 usrName = None
 psword = None
 
+config = [
+    ['/auth', auth.login]
+]
 
 def convertUserDataToJson(username):
     data = requests.get('{}sites?username={}'.format(apiurl, username)).json()
     return data
 
-
-# Login Page
-@app.route('/auth', methods=['GET', 'POST'])
-def login():
-
-    if request.method == 'POST':
-
-        user = None
-        pw = None
-
-        try:
-            user = session['username']
-        except:
-            pass
-
-        if user == None and pw == None:
-
-            usrname = request.form['username']
-            psword = request.form['password']
-
-            data = requests.get(apiurl).json()
-            
-            for i in data:
-                print(usrname, psword)
-                if i[0] == usrname and i[1] == psword:
-                    session['username'] = usrname
-                    return redirect('/passwords/home')
-        
-            return render_template('login.html', error=True)
-
-        else:
-            return redirect('/passwords/home')
-
-    else:
-        user = None
-        pw = None
-
-        try:
-            user = session['username']
-        except:
-            pass
-
-        if user == None and pw == None:
-
-
-            return render_template('login.html')
-
-        else:
-            return redirect('/passwords/home')
-
+@app.route('/auth', methods = ['GET', 'POST'])
+def Login():
+    return auth.login()
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
-    session['username'] = None
-    print(session['username'])
-    return redirect('/auth')
+    return auth.logout()
 
 @app.route('/delete', methods=['POST','GET'])
 def delete():
@@ -106,121 +63,40 @@ def delete():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    if request.method == 'POST':
-        user = None
-        pw = None
-
-        try:
-            user = session['username']
-        except:
-            pass
-
-        if user == None and pw == None:
-        
-            username = request.form['username']
-            usrName = username
-            password = request.form['password']
-            psword = password
-
-            email = request.form['email']
-            try:
-                convertUserDataToJson(username)
-                return render_template('signup.html', msg = "User Already Exists!")
-            except:
-                if len(password) < 8:
-                    return render_template('signup.html', msg = "Please select a password more than 8 digits!")
-                else:
-                    with open(path+'creds.json') as file:
-                        data = json.load(file)
-                    with open(path+'creds.json', 'w') as file:
-                        data['username'] = username
-                        data['password'] = password
-                        json.dump(data, file)
-
-                    token = str(r.randint(100000, 1000000))
-
-                    if os.path.exists(path+'tokens.json'):
-                        with open(path+'tokens.json', 'w') as file:
-                            json.dump([], file)
-
-                    with open(path+'tokens.json') as file:
-                        data = json.load(file)
-
-                    data.append(token)
-
-                    with open(path+'tokens.json', 'w') as file:
-                        json.dump(data, file)
-                    db.addUser(username)
-                    try:
-                        msg = Message(
-                            'Confirmation Email',
-                            sender = "admin@menoustech.com",
-                            recipients=[email]
-                        ) 
-                        msg.body = render_template('email.html', username = username, OTP = token)
-                        msg.html = render_template('email.html', username = username, OTP = token)
-
-                        mail.send(msg)
-                        return redirect('/confirm')
-                    except Exception as ex:
-                        return str(ex)
-
-        else:
-            return redirect('/passwords/home')
-
-    else:
-        user = None
-        pw = None
-
-        try:
-            user = session['username']
-        except:
-            pass
-
-        if user != None and pw != None:
-            return redirect('/passwords/home')
-        else:
-            return render_template('signup.html', msg = "")       
-
-
-# Snehashish Laskar
-@app.route('/passwords/home', methods=['GET', 'POST'])
-def home():
-    if request.method == 'POST':
-        if 'add' in request.form:
-            name = request.form['addname']
-            email = request.form['addemail']
-            username =  request.form['addusername']
-            password = request.form['addpass']
-
-            query = requests.post('{}addsite?username={}&sitename={}&password={}&email={}&siteusrname={}'.format(
-                apiurl,
-                session['username'],
-                name,
-                password,
-                email,
-                username,
-            ))
-            return redirect('/passwords/home')
-        
-        elif 'del' in request.form:
-            name = request.form['name']
-
-            query = requests.delete('{}delsite?username={}&site={}'.format(
-                apiurl,
-                session['username'],
-                name
-            ))
-
-            return redirect('/passwords/home')
-    else:
-        return render_template('home.html', sess = True, data = convertUserDataToJson(session['username']))
-
+    return auth.signup(mail, Message)  
 
 @app.route('/cookies', methods = ['GET', 'POST'])
 def cook():
     return jsonify(session['username'])
     
+@app.route('/deleteusersure', methods=["GET", "POST"])
+def deleteUser():
+    return auth.deleteUser()
+
+@app.route('/confirm/', methods=['GET', 'POST'])
+def confirm():
+    return auth.confirm()
+
+@app.route('/passwords/home', methods=['GET', 'POST'])
+def pw():
+    return passwords.home()
+
+@app.route('/blogs/', methods = ['GET', 'POST'])
+def blog():
+    return blogs.blog()
+
+@app.route('/blogs/<username>', methods = ['GET', 'POST'])
+def userBlog(username):
+    return blogs.blogUser(username)
+
+@app.route('/blogs/newpost', methods = ['POST', 'GET'])
+def newpost():
+    return blogs.newPost()
+
+@app.route('/<page>', methods=['GET'])
+def unknown(page):
+    return render_template('error.html')
+
 @app.route('/', methods = ['GET', 'POST'])
 def main():
 
@@ -237,79 +113,6 @@ def main():
     else:
         return render_template('index.html', sess = False)
 
-@app.route('/deleteusersure', methods=["GET", "POST"])
-def deleteUser():
-
-    requests.delete(f"{apiurl}delete?username={session['username']}")
-    return redirect('/logout')
-
-
-
-@app.route('/confirm/', methods=['GET', 'POST'])
-def confirm():
-
-    with open(path+'tokens.json') as file:
-        data = json.load(file)
-
-    with open(path+'creds.json') as file:
-        data2 = json.load(file)
-
-    if request.method == 'GET':
-        return render_template('confirm.html')
-    else:
-        otp = str(request.form['otp'])
-        if otp in data:
-            print(otp)
-            requests.post('{}createuser?username={}&password={}'.format(
-                    apiurl,data2['username'], data2['password']
-                ))
-            session['username'] = data2['username']
-            data2['username'] = ''
-            data2['password'] = ''
-            with open(path+'creds.json', 'w') as file:
-                json.dump(data2, file)
-            return redirect('/passwords/home')
-        else:
-            return render_template('confirm.html', incorrect=True)
-
-@app.route('/blogs/', methods = ['GET', 'POST'])
-def blog():
-    if session['username'] == '':
-        return redirect('/auth/')
-    data = db.readUserDb(session['username'])
-    data.reverse()
-    return render_template('blogs.html', data=data, sess = True)
-
-@app.route('/blogs/<username>', methods = ['GET', 'POST'])
-def userBlog(username):
-
-    data = db.readUserDb(username)
-    data.reverse()
-    if session['username'] == None:
-        return render_template('blogs.html', data=data, sess = False)
-    return render_template('blogs.html', data=data, sess = True)
-
-@app.route('/blogs/newpost', methods = ['POST', 'GET'])
-def newPost():
-
-    if request.method == 'GET':
-        return render_template('add-post.html')
-    else:
-        if session ['username'] == None:
-            return redirect('/auth')
-
-        title = request.form['title']
-        date = request.form['date']
-        txt = request.form['txt']
-        body = txt.split('\r\n')
-
-        db.addPost(session['username'], title, date, body)
-        return redirect('/blogs/')
-
-@app.route('/<page>', methods=['GET'])
-def unknown(page):
-    return render_template('error.html')
-
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=8000)
+    app.run(debug=True, host="127.0.0.1", port=8001)
