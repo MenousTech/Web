@@ -1,6 +1,6 @@
 from flask import *
 from DB import *
-
+import blogdb as blog
 api = Flask(__name__)
 
 @api.route('/', methods=['GET'])
@@ -94,5 +94,31 @@ def deleteuser():
     except Exception as ex:
         return str(ex)
 
+@api.route('/blogs/', methods = ['GET', 'POST'])
+def blogs():
+    try:
+        if request.method == 'GET':
+            if 'user' in request.headers:
+                return jsonify(blog.readUserDb(request.headers['user']))
+            else:
+                return jsonify(blog.readDb())
+                
+        elif request.method == 'POST':
+            user = request.json['user']
+            title = request.json['title']
+            date = request.json['date']
+            body = request.json['body']
+
+            blog.addPost(
+                user,title, date, body
+            )
+            return jsonify({
+                'response':200,
+                'operation':'success',
+                'body':blog.readDb()
+            })
+    except Exception as ex:
+        return str(ex)
+        
 if __name__ == '__main__':
     api.run(debug=True, host = '0.0.0.0', port=8000)
