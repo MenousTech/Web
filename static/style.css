@@ -62,9 +62,14 @@ body nav img{
   font-size: 20px;
   padding: 7px;
   background-color: none;
-
 }
 
+#settings-icon:hover {
+  transform: rotate(-90deg);
+}
+#settings-icon::after{
+  transform: rotate(-360deg);
+}
 #navbutton {
   margin-left: 20px;
   

@@ -8,7 +8,7 @@ from flask_session import Session
 from flask_mail import Mail, Message
 import requests
 from secrets import token_urlsafe
-import json 
+import json
 from pathlib import Path
 import os
 import random as r
@@ -28,7 +28,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configuration of Flask Mail to send confirmation email
-app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'admin@menoustech.com'
 app.config['MAIL_PASSWORD'] = 'snehashish08036#@#'
@@ -45,65 +45,79 @@ config = [
     ['/auth', auth.login]
 ]
 
+
 def convertUserDataToJson(username):
     data = requests.get('{}sites?username={}'.format(apiurl, username)).json()
     return data
 
-@app.route('/auth', methods = ['GET', 'POST'])
+
+@app.route('/auth', methods=['GET', 'POST'])
 def Login():
     return auth.login()
+
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     return auth.logout()
 
-@app.route('/delete', methods=['POST','GET'])
+
+@app.route('/delete', methods=['POST', 'GET'])
 def delete():
     return render_template('delete_account.html', sess=True)
 
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    return auth.signup(mail, Message)  
+    return auth.signup(mail, Message)
 
-@app.route('/cookies', methods = ['GET', 'POST'])
+
+@app.route('/cookies', methods=['GET', 'POST'])
 def cook():
     return jsonify(session['username'])
-    
+
+
 @app.route('/deleteusersure', methods=["GET", "POST"])
 def deleteUser():
     return auth.deleteUser()
 
+
 @app.route('/passwords/home', methods=["GET", "POST"])
 def passwordHome():
     return redirect('/passwords/')
-    
+
+
 @app.route('/confirm/', methods=['GET', 'POST'])
 def confirm():
     return auth.confirm()
+
 
 @app.route('/passwords/', methods=['GET', 'POST'])
 def pw():
     return passwords.home()
 
-@app.route('/blogs/', methods = ['GET', 'POST'])
+
+@app.route('/blogs/', methods=['GET', 'POST'])
 def blog():
     return blogs.blog()
 
-@app.route('/blogs/<username>', methods = ['GET', 'POST'])
+
+@app.route('/blogs/<username>', methods=['GET', 'POST'])
 def userBlog(username):
     return blogs.blogUser(username)
 
-@app.route('/blogs/newpost', methods = ['POST', 'GET'])
+
+@app.route('/blogs/newpost', methods=['POST', 'GET'])
 def newpost():
     return blogs.newPost()
+
 
 @app.route('/<page>', methods=['GET'])
 def unknown(page):
     return render_template('error.html')
 
-@app.route('/', methods = ['GET', 'POST'])
-def main():
 
+@app.route('/', methods=['GET', 'POST'])
+def main():
     user = None
     pw = None
 
@@ -113,10 +127,10 @@ def main():
         pass
 
     if user != None:
-        return render_template('index.html', sess = True)
+        return render_template('index.html', sess=True)
     else:
-        return render_template('index.html', sess = False)
+        return render_template('index.html', sess=False)
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="127.0.0.1", port=8001)
+    app.run(debug=True, host="0.0.0.0", port=80)

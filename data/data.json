@@ -1,7 +1,31 @@
 {
-    "snehashish":[
-        {"title":"Hello World",
-         "date": "17th Nov 2008",
-        "body":["Hello World"]}
-    ]
+ "snehashish": [
+  {
+   "title": "Hello World",
+   "date": "17th Nov 2008",
+   "body": [
+    "Hello World"
+   ]
+  },
+  {
+   "title": "Snehamoy My Brother",
+   "date": "18th November 2022",
+   "body": [
+    "My Brother Snehamoy is a good boy. Kutumb Kabila Snehamoy ke dimag ka screw dhila. "
+   ],
+   "author": "snehashish"
+  }
+ ],
+ "ishan": [
+  {
+   "title": "My First Post",
+   "date": "19th November 2022",
+   "body": [
+    "Hello World This is my first post!",
+    "Ishan Kashyap is a sage!",
+    "LOL"
+   ],
+   "author": "ishan"
+  }
+ ]
 }
