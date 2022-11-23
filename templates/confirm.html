@@ -38,6 +38,22 @@
         background-color: #fff;
         padding: 50px;
         border-radius: 20px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .form-control {
+        width: 50%;
+        margin-left: 25%;
+    }
+    .form{
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    #subbutton{
+        width: 50%;
     }
 </style>
 {% endblock %}
@@ -51,12 +67,12 @@
     {% endif %}
     <h1 class = 'title' >Conformation Email Sent!</h1>
     <p>Pleae check the email account you used to sign up and and enter the OTP below</p>
-    <form action = "#" method="post">
+    <form class = "form" action = "#" method="post">
         <div class="form-group">
           <label for="exampleInputPassword1">OTP</label>
-          <input type="text" name = "otp" class="form-control" id="exampleInputPassword1" placeholder="OTP">
+          <input width = "55px" type="text" name = "otp" class="form-control" id="exampleInputPassword1" placeholder="OTP">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button id = "subbutton" type="submit" class="btn btn-primary">Submit</button>
       </form>
 </div>
 

@@ -7,12 +7,7 @@ from flask import *
 from flask_session import Session
 from flask_mail import Mail, Message
 import requests
-from secrets import token_urlsafe
-import json
 from pathlib import Path
-import os
-import random as r
-import db
 import passwords
 import auth
 import blogs
@@ -40,10 +35,6 @@ mail = Mail(app)
 apiurl = 'http://snehashishlaskar090.pythonanywhere.com/'
 usrName = None
 psword = None
-
-config = [
-    ['/auth', auth.login]
-]
 
 
 def convertUserDataToJson(username):
@@ -133,4 +124,4 @@ def main():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=80)
+    app.run(debug=True, host="0.0.0.0", port=800)
