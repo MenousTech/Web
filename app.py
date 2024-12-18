@@ -25,14 +25,14 @@ Session(app)
 # Configuration of Flask Mail to send confirmation email
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'admin@menoustech.com'
-app.config['MAIL_PASSWORD'] = 'snehashish08036#@#'
+app.config['MAIL_USERNAME'] = 'EMAIL'
+app.config['MAIL_PASSWORD'] = 'PASSWORD'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 # Setting the api url
-apiurl = 'http://snehashishlaskar090.pythonanywhere.com/'
+apiurl = 'API
 usrName = None
 psword = None
 
